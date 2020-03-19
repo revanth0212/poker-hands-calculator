@@ -41,71 +41,58 @@ const numericAscSortFn = subtract;
 // Rules
 
 const isFlush = function(cards) {
-  return compose(all(equals(cards[0].shape)), map(prop("shape")))(cards);
+  /**
+   * All cards have same shape
+   */
 };
 
 const isStraight = function(cards) {
-  const faceValues = getFaceValues(cards);
-  const diffArrayCalculator = converge(map, [
-    compose(flip(subtract), head),
-    identity
-  ]);
-
-  return compose(
-    equals([0, 1, 2, 3, 4]),
-    diffArrayCalculator,
-    sort(subtract)
-  )(faceValues);
+  /**
+   * All cards are in sequential rank order
+   */
 };
 
-const isStraightFlush = allPass([isFlush, isStraight]);
+const isStraightFlush = function(cards) {
+  /**
+   * Is a Straight and a Flush
+   */
+};
 
 const isRoyalFlush = function(cards) {
-  const firstCardShouldBe10 = compose(equals(10), prop("faceValue"), head);
-
-  return allPass([firstCardShouldBe10, isStraightFlush])(cards);
+  /**
+   * Is a Straight Flush with cards starting with 10 to A
+   */
 };
 
 const is4OfAKind = function(cards) {
-  const faceValues = getFaceValues(cards);
-  const arrayEqualityChecker = (v, a) => all(equals(v), a);
-
-  return either(
-    converge(arrayEqualityChecker, [head, init]),
-    converge(arrayEqualityChecker, [last, tail])
-  )(faceValues);
+  /**
+   * 4 cards should be of a certain rank
+   */
 };
 
 const is3OfAKind = function(cards) {
-  const faceValues = getFaceValues(cards);
-
-  return anyPass([
-    converge(equals, [prop(0), prop(2)]),
-    converge(equals, [prop(1), prop(3)]),
-    converge(equals, [prop(2), prop(4)])
-  ])(faceValues);
+  /**
+   * 3 cards should be of a certain rank
+   */
 };
 
-const is2OfAKind = compose(
-  equals([1, 1, 1, 2]),
-  sort(numericAscSortFn),
-  values,
-  getCardValuesSet
-);
+const is2OfAKind = function(cards) {
+  /**
+   * 2 cards should be of a certain rank
+   */
+};
 
-const isFullHouse = compose(
-  equals([2, 3]),
-  sort(numericAscSortFn),
-  values,
-  getCardValuesSet
-);
+const isFullHouse = function(cards) {
+  /**
+   * Should have a 3 of a kind and other 2 of another kind
+   */
+};
 
-const is2Pair = compose(
-  equals([1, 2, 2]),
-  sort(numericAscSortFn),
-  values,
-  getCardValuesSet
-);
+const is2Pair = function(cards) {
+  /**
+   * Should have 2 sets that are 2 of a kind
+   */
+};
 
 // Calculator
 
