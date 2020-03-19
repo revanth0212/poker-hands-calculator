@@ -40,6 +40,30 @@ const numericAscSortFn = subtract;
 
 // Rules
 
+const isRoyalFlush = function(cards) {
+  /**
+   * Is a Straight Flush with cards starting with 10 to A
+   */
+};
+
+const isStraightFlush = function(cards) {
+  /**
+   * Is a Straight and a Flush
+   */
+};
+
+const is4OfAKind = function(cards) {
+  /**
+   * 4 cards should be of a certain rank
+   */
+};
+
+const isFullHouse = function(cards) {
+  /**
+   * Should have a 3 of a kind and other 2 of another kind
+   */
+};
+
 const isFlush = function(cards) {
   /**
    * All cards have same shape
@@ -52,45 +76,21 @@ const isStraight = function(cards) {
    */
 };
 
-const isStraightFlush = function(cards) {
-  /**
-   * Is a Straight and a Flush
-   */
-};
-
-const isRoyalFlush = function(cards) {
-  /**
-   * Is a Straight Flush with cards starting with 10 to A
-   */
-};
-
-const is4OfAKind = function(cards) {
-  /**
-   * 4 cards should be of a certain rank
-   */
-};
-
 const is3OfAKind = function(cards) {
   /**
    * 3 cards should be of a certain rank
    */
 };
 
-const is2OfAKind = function(cards) {
-  /**
-   * 2 cards should be of a certain rank
-   */
-};
-
-const isFullHouse = function(cards) {
-  /**
-   * Should have a 3 of a kind and other 2 of another kind
-   */
-};
-
 const is2Pair = function(cards) {
   /**
    * Should have 2 sets that are 2 of a kind
+   */
+};
+
+const is2OfAKind = function(cards) {
+  /**
+   * 2 cards should be of a certain rank
    */
 };
 
