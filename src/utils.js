@@ -11,14 +11,17 @@ const {
   converge,
   either,
   values,
-  sort
+  sort,
+  allPass,
+  subtract,
+  flip,
+  identity,
+  anyPass
 } = require("ramda");
 
 // Helpers
 
-const getFaceValues = function(cards) {
-  return cards.map(({ faceValue }) => faceValue);
-};
+const getFaceValues = map(prop("faceValue"));
 
 const getCardValuesSet = function(cards) {
   const obj = {};
@@ -33,7 +36,7 @@ const getCardValuesSet = function(cards) {
   return obj;
 };
 
-const numericAscSortFn = (a, b) => a > b;
+const numericAscSortFn = subtract;
 
 // Rules
 
@@ -42,27 +45,31 @@ const isFlush = function(cards) {
 };
 
 const isStraight = function(cards) {
-  let i = 0;
-  const diffArray = [];
-  for (i in cards) {
-    if (i < cards.length - 1) {
-      diffArray.push(cards[+i + 1].faceValue - cards[+i].faceValue);
-    }
-  }
-  return all(equals(1), diffArray);
+  const faceValues = getFaceValues(cards);
+  const diffArrayCalculator = converge(map, [
+    compose(flip(subtract), head),
+    identity
+  ]);
+
+  return compose(
+    equals([0, 1, 2, 3, 4]),
+    diffArrayCalculator,
+    sort(subtract)
+  )(faceValues);
 };
 
-const isStraightFlush = function(cards) {
-  return isFlush(cards) && isStraight(cards);
-};
+const isStraightFlush = allPass([isFlush, isStraight]);
 
 const isRoyalFlush = function(cards) {
-  return cards[0].faceValue === 10 && isStraightFlush(cards);
+  const firstCardShouldBe10 = compose(equals(10), prop("faceValue"), head);
+
+  return allPass([firstCardShouldBe10, isStraightFlush])(cards);
 };
 
 const is4OfAKind = function(cards) {
   const faceValues = getFaceValues(cards);
   const arrayEqualityChecker = (v, a) => all(equals(v), a);
+
   return either(
     converge(arrayEqualityChecker, [head, init]),
     converge(arrayEqualityChecker, [last, tail])
@@ -70,8 +77,13 @@ const is4OfAKind = function(cards) {
 };
 
 const is3OfAKind = function(cards) {
-  const fv = getFaceValues(cards);
-  return fv[0] === fv[2] || fv[1] === fv[3] || fv[2] === fv[4];
+  const faceValues = getFaceValues(cards);
+
+  return anyPass([
+    converge(equals, [prop(0), prop(2)]),
+    converge(equals, [prop(1), prop(3)]),
+    converge(equals, [prop(2), prop(4)])
+  ])(faceValues);
 };
 
 const is2OfAKind = compose(
