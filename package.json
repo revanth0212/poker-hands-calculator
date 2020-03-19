@@ -1,0 +1,16 @@
+{
+  "name": "poker-hands-calculator",
+  "version": "1.0.0",
+  "description": "A poker hands calculator built using Ramda and Functional Programming concepts.",
+  "main": "index.js",
+  "repository": "https://github.com/revanth0212/poker-hands-calculator.git",
+  "author": "Revanth Kumar <revanth0212@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "ramda": "^0.27.0"
+  }
+}
